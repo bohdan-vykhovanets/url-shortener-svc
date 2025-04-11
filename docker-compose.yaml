@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: ghcr.io/bohdan-vykhovanets/url-shortener-svc:latest
     container_name: url-shrt-api
     environment:
       - KV_VIPER_FILE=/app/config.yaml
@@ -13,7 +11,6 @@ services:
         condition: service_healthy
     volumes:
       - ./config.yaml:/app/config.yaml
-    command: ["run", "service"]
     ports:
       - "8080:8080"
 
