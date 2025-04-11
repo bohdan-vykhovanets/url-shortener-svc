@@ -3,7 +3,9 @@ FROM golang:1.24.2-alpine AS buildbase
 RUN apk add git build-base
 
 WORKDIR /go/src/github.com/bohdan-vykhovanets/url-shortener-svc
-COPY vendor .
+COPY go.mod go.sum ./
+RUN go mod download
+
 COPY . .
 
 RUN GOOS=linux go build  -o /usr/local/bin/url-shortener-svc /go/src/github.com/bohdan-vykhovanets/url-shortener-svc
