@@ -15,16 +15,12 @@ This service shortens URLs
   ./main run service
   ```
 
-## Running from docker 
+## Running with docker compose
   
 Make sure that docker installed.
 
-use `docker run ` with `-p 8080:80` to expose port 80 to 8080
-
-  ```
-  docker build -t github.com/bohdan-vykhovanets/url-shortener-svc .
-  docker run -e KV_VIPER_FILE=/config.yaml github.com/bohdan-vykhovanets/url-shortener-svc
-  ```
+1. Download docker-compose.yaml
+2. Execute `docker compose up`
 
 ## Running from Source
 
