@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/bohdan-vykhovanets/url-shortener-svc/internal/service/handlers"
 	"net"
 	"net/http"
 
@@ -11,9 +12,10 @@ import (
 )
 
 type service struct {
-	log      *logan.Entry
-	copus    types.Copus
-	listener net.Listener
+	log           *logan.Entry
+	shortenedUrls *handlers.ShortenedUrls
+	copus         types.Copus
+	listener      net.Listener
 }
 
 func (s *service) run() error {
@@ -28,10 +30,12 @@ func (s *service) run() error {
 }
 
 func newService(cfg config.Config) *service {
+	db := cfg.DB()
 	return &service{
-		log:      cfg.Log(),
-		copus:    cfg.Copus(),
-		listener: cfg.Listener(),
+		log:           cfg.Log(),
+		shortenedUrls: handlers.NewShortenedUrls(db),
+		copus:         cfg.Copus(),
+		listener:      cfg.Listener(),
 	}
 }
 
