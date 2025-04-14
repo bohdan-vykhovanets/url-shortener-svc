@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/bohdan-vykhovanets/url-shortener-svc/internal/config"
+	"github.com/bohdan-vykhovanets/url-shortener-svc/internal/data/postgres"
 	"github.com/bohdan-vykhovanets/url-shortener-svc/internal/service/handlers"
 	"github.com/go-chi/chi"
 	"gitlab.com/distributed_lab/ape"
@@ -8,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (s *service) router() chi.Router {
+func (s *service) router(cfg config.Config) chi.Router {
 	r := chi.NewRouter()
 
 	r.Use(
@@ -16,13 +18,14 @@ func (s *service) router() chi.Router {
 		ape.LoganMiddleware(s.log),
 		ape.CtxMiddleware(
 			handlers.CtxLog(s.log),
+			handlers.CtxDb(postgres.NewMainQ(cfg.DB())),
 		),
 	)
 	r.Route("/integrations/url-shortener-svc", func(r chi.Router) {
-		r.Get("/urls/{code}", s.shortenedUrls.Redirect)
-		r.Post("/urls/", s.shortenedUrls.CreateShortenedUrl)
+		r.Get("/urls/{code}", handlers.Redirect)
+		r.Post("/urls/", handlers.CreateShortenedUrl)
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			_, err := io.WriteString(w, "Health is OK")
+			_, err := io.WriteString(w, "Health is OKay")
 			if err != nil {
 				return
 			}
