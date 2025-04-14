@@ -42,10 +42,6 @@ func (h *ShortenedUrls) CreateShortenedUrl(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	for i := 0; i < 5; i++ {
-
-	}
-
 	code, err := insertUniqueShortenedUrl(h.db, req.Url, 5)
 	if err != nil {
 		Log(r).Error(err.Error())
