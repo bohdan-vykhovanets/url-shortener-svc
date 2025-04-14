@@ -8,7 +8,7 @@ type ShortenedUrlQ interface {
 }
 
 type ShortenedUrl struct {
-	ID        int64     `db:"id" structs:"id"`
+	ID        int64     `db:"id" structs:"-"`
 	Code      string    `db:"code" structs:"code"`
 	LongUrl   string    `db:"long_url" structs:"long_url"`
 	CreatedAt time.Time `db:"created_at" structs:"created_at"`
